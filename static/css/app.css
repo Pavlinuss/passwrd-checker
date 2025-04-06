@@ -1,0 +1,137 @@
+.bg-header-blue {
+	background-color: #00aeff;
+}
+.bg-footer-blue {
+	background-color: #005c9e;
+}
+.bg-input-area {
+	background-color: #f0f0f0;
+}
+.text-light-gray {
+	color: #a0aec0;
+}
+.text-medium-gray {
+	color: #718096;
+}
+.text-dark-gray {
+	color: #4a5568;
+}
+.text-link-blue {
+	color: #3182ce;
+}
+
+.char-indicator {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 0.75rem;
+	margin-right: 8px;
+	color: #718096;
+	background-color: #e2e8f0;
+	transition: all 0.3s ease;
+}
+.char-indicator.active {
+	color: #ffffff;
+}
+.char-indicator.active.lower {
+	background-color: #38a169;
+}
+.char-indicator.active.upper {
+	background-color: #3182ce;
+}
+.char-indicator.active.numbers {
+	background-color: #dd6b20;
+}
+.char-indicator.active.symbols {
+	background-color: #e53e3e;
+}
+
+.strength-bar-container {
+	height: 5px;
+	background-color: #e2e8f0;
+	border-radius: 3px;
+	overflow: hidden;
+	margin-top: 4px;
+}
+.strength-bar {
+	height: 100%;
+	width: 0%;
+	border-radius: 3px;
+	transition: width 0.3s ease, background-color 0.3s ease;
+	background-color: #e53e3e;
+}
+.strength-bar.very-weak {
+	background-color: #e53e3e;
+	width: 20%;
+}
+.strength-bar.weak {
+	background-color: #dd6b20;
+	width: 40%;
+}
+.strength-bar.medium {
+	background-color: #d69e2e;
+	width: 60%;
+}
+.strength-bar.good {
+	background-color: #38a169;
+	width: 80%;
+}
+.strength-bar.excellent {
+	background-color: #3182ce;
+	width: 100%;
+}
+
+.custom-checkbox input[type='checkbox'] {
+	opacity: 0;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+}
+.custom-checkbox .checkmark {
+	position: relative;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-color: #fff;
+	border: 1px solid #cbd5e0;
+	border-radius: 3px;
+	margin-right: 8px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.custom-checkbox input[type='checkbox']:checked + .checkmark {
+	background-color: #3182ce;
+	border-color: #3182ce;
+}
+.custom-checkbox input[type='checkbox']:checked + .checkmark:after {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 1px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+body {
+	background-color: #ffffff;
+	font-family: sans-serif;
+}
+
+.active-lang {
+	font-weight: bold;
+	text-decoration: underline;
+}
+.lang-switch-btn {
+	cursor: pointer;
+}
