@@ -2,7 +2,6 @@ const passwordInput = document.getElementById('passwordInput')
 const strengthBar = document.getElementById('strengthBar')
 const strengthText = document.getElementById('strengthText')
 const showPasswordCheckbox = document.getElementById('showPasswordCheckbox')
-const charCount = document.getElementById('charCount')
 const charCountPrefixElement = document.getElementById('charCountPrefix')
 const lowerCaseIndicator = document.getElementById('lowerCaseIndicator')
 const upperCaseIndicator = document.getElementById('upperCaseIndicator')
@@ -11,51 +10,125 @@ const symbolsIndicator = document.getElementById('symbolsIndicator')
 const crackTimeText = document.getElementById('crackTimeText')
 const feedbackList = document.getElementById('feedbackList')
 
+const bubbleContainer = document.getElementById('bubble-container')
+const numberOfBubbles = 25
+
+function createBubbles() {
+	if (!bubbleContainer) return
+
+	for (let i = 0; i < numberOfBubbles; i++) {
+		const bubble = document.createElement('span')
+		bubble.classList.add('bubble')
+
+		const size = Math.random() * 50 + 10
+		bubble.style.width = `${size}px`
+		bubble.style.height = `${size}px`
+
+		bubble.style.left = `${Math.random() * 100}%`
+
+		const duration = Math.random() * 5 + 5
+		bubble.style.animationDuration = `${duration}s`
+
+		const delay = Math.random() * 5
+		bubble.style.animationDelay = `${delay}s`
+
+		bubbleContainer.appendChild(bubble)
+	}
+}
+
+const strengthLabels = {
+	no_password: 'No Password',
+	very_weak: 'Very Weak',
+	weak: 'Weak',
+	medium: 'Medium',
+	strong: 'Strong',
+	very_strong: 'Very Strong',
+}
+
+const feedbackMessages = {
+	length: 'Password should be at least 8 characters long.',
+	lowercase: 'Include lowercase letters.',
+	uppercase: 'Include uppercase letters.',
+	numbers: 'Include numbers.',
+	symbols: 'Include symbols (e.g., !@#$%^&*).',
+	common: 'Avoid common passwords.',
+	sequential: "Avoid sequential characters (e.g., '123', 'abc').",
+	repeating: "Avoid repeating characters (e.g., 'aaa', '111').",
+}
+
 function updatePasswordStrength(password) {
-	let strengthValue = 0
-	let strengthLabelKey = 'strength_no_password'
-	let barClass = 'bg-gray-300'
-	const feedbackMessagesKeys = []
+	let score = 0
+	const feedbackKeys = []
 
 	if (password.length > 0) {
-		if (password.length < 8) {
-			feedbackMessagesKeys.push('feedback_length')
-		}
-		if (!/[a-z]/.test(password)) {
-			feedbackMessagesKeys.push('feedback_lowercase')
-		}
-
-		if (strengthValue < 2) {
-			strengthLabelKey = 'strength_very_weak'
-			barClass = 'bg-red-500'
-		} else if (strengthValue < 3) {
-			strengthLabelKey = 'strength_weak'
-			barClass = 'bg-orange-500'
-		} else if (strengthValue < 4) {
-			strengthLabelKey = 'strength_medium'
-			barClass = 'bg-yellow-500'
-		} else if (strengthValue < 5) {
-			strengthLabelKey = 'strength_strong'
-			barClass = 'bg-green-400'
+		if (password.length >= 8) {
+			score++
 		} else {
-			strengthLabelKey = 'strength_very_strong'
-			barClass = 'bg-green-600'
+			feedbackKeys.push('length')
 		}
-	} else {
-		strengthValue = 0
-		barClass = 'bg-gray-300'
+		if (/[a-z]/.test(password)) {
+			score++
+		} else {
+			feedbackKeys.push('lowercase')
+		}
+		if (/[A-Z]/.test(password)) {
+			score++
+		} else {
+			feedbackKeys.push('uppercase')
+		}
+		if (/[0-9]/.test(password)) {
+			score++
+		} else {
+			feedbackKeys.push('numbers')
+		}
+		if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password)) {
+			score++
+		} else {
+			feedbackKeys.push('symbols')
+		}
+		if (password.length >= 12) {
+			score++
+		}
 	}
 
-	strengthText.textContent = getTranslation(strengthLabelKey)
+	let strengthLabelKey = 'no_password'
+	let barClass = 'no-password'
 
-	strengthBar.style.width = `${(strengthValue / 5) * 100}%`
-	strengthBar.className = `strength-bar ${barClass}`
+	if (password.length > 0) {
+		if (score <= 1) {
+			strengthLabelKey = 'very_weak'
+			barClass = 'very-weak'
+		} else if (score === 2) {
+			strengthLabelKey = 'weak'
+			barClass = 'weak'
+		} else if (score === 3) {
+			strengthLabelKey = 'medium'
+			barClass = 'medium'
+		} else if (score === 4) {
+			strengthLabelKey = 'strong'
+			barClass = 'strong'
+		} else {
+			strengthLabelKey = 'very_strong'
+			barClass = 'very-strong'
+		}
+	} else {
+		score = 0
+	}
+
+	strengthText.textContent = strengthLabels[strengthLabelKey]
+
+	strengthBar.className = 'strength-bar'
+	if (password.length > 0) {
+		strengthBar.classList.add(barClass)
+	} else {
+		strengthBar.style.width = '0%'
+	}
 
 	updateCharIndicators(password)
 
-	updateCharCountText(password.length)
+	updateFeedback(feedbackKeys)
 
-	updateFeedback(feedbackMessagesKeys)
+	updateCrackTime(password)
 }
 
 function updateCharIndicators(password) {
@@ -65,44 +138,44 @@ function updateCharIndicators(password) {
 	const hasSymbols = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password)
 
 	lowerCaseIndicator.classList.toggle('active', hasLowerCase)
-	upperCaseIndicator.classList.toggle('active', hasUpperCase)
-	numbersIndicator.classList.toggle('active', hasNumbers)
-	symbolsIndicator.classList.toggle('active', hasSymbols)
-}
+	lowerCaseIndicator.classList.toggle('lower', hasLowerCase)
 
-function updateCharCountText(length) {
-	if (charCount) {
-		let countSpan = charCount.querySelector('.char-count-number')
-		if (!countSpan) {
-			countSpan = document.createElement('span')
-			countSpan.className = 'char-count-number'
-			charCount.prepend(countSpan)
-			if (!charCount.textContent.includes(' ')) {
-				charCount.insertBefore(
-					document.createTextNode(' '),
-					charCountPrefixElement
-				)
-			}
-		}
-		countSpan.textContent = length
-	}
-	if (charCountPrefixElement) {
-		charCountPrefixElement.textContent = getTranslation('char_count_prefix')
-	}
+	upperCaseIndicator.classList.toggle('active', hasUpperCase)
+	upperCaseIndicator.classList.toggle('upper', hasUpperCase)
+
+	numbersIndicator.classList.toggle('active', hasNumbers)
+	numbersIndicator.classList.toggle('numbers', hasNumbers)
+
+	symbolsIndicator.classList.toggle('active', hasSymbols)
+	symbolsIndicator.classList.toggle('symbols', hasSymbols)
 }
 
 function updateFeedback(feedbackKeys) {
 	feedbackList.innerHTML = ''
 	feedbackKeys.forEach(key => {
-		const li = document.createElement('li')
-		li.textContent = getTranslation(key)
-		feedbackList.appendChild(li)
+		const message = feedbackMessages[key]
+		if (message) {
+			const li = document.createElement('li')
+			li.textContent = message
+			feedbackList.appendChild(li)
+		}
 	})
 }
 
-function updateDynamicTexts(lang) {
-	const currentPassword = passwordInput.value
-	updatePasswordStrength(currentPassword)
+function updateCrackTime(password) {
+	if (password.length === 0) {
+		crackTimeText.textContent = '~'
+		return
+	}
+	let time = 'Instantly'
+	if (password.length >= 8) time = 'Seconds'
+	if (password.length >= 10) time = 'Minutes'
+	if (password.length >= 12) time = 'Hours'
+	if (password.length >= 14) time = 'Days'
+	if (password.length >= 16) time = 'Years'
+	if (password.length >= 18) time = 'Centuries'
+
+	crackTimeText.textContent = time
 }
 
 passwordInput.addEventListener('input', e => {
@@ -112,3 +185,6 @@ passwordInput.addEventListener('input', e => {
 showPasswordCheckbox.addEventListener('change', () => {
 	passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password'
 })
+
+updatePasswordStrength('')
+createBubbles()

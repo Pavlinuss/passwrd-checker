@@ -1,33 +1,11 @@
-.bg-header-blue {
-	background-color: #00aeff;
-}
-.bg-footer-blue {
-	background-color: #005c9e;
-}
-.bg-input-area {
-	background-color: #f0f0f0;
-}
-.text-light-gray {
-	color: #a0aec0;
-}
-.text-medium-gray {
-	color: #718096;
-}
-.text-dark-gray {
-	color: #4a5568;
-}
-.text-link-blue {
-	color: #3182ce;
-}
-
 .char-indicator {
 	display: inline-block;
 	padding: 2px 8px;
 	border-radius: 12px;
 	font-size: 0.75rem;
 	margin-right: 8px;
-	color: #718096;
-	background-color: #e2e8f0;
+	color: #d1d5db;
+	background-color: #4b5563;
 	transition: all 0.3s ease;
 }
 .char-indicator.active {
@@ -48,10 +26,12 @@
 
 .strength-bar-container {
 	height: 5px;
-	background-color: #e2e8f0;
+	background-color: #4a5568;
 	border-radius: 3px;
 	overflow: hidden;
-	margin-top: 4px;
+	margin-top: -1px;
+	position: relative;
+	z-index: 0;
 }
 .strength-bar {
 	height: 100%;
@@ -72,11 +52,11 @@
 	background-color: #d69e2e;
 	width: 60%;
 }
-.strength-bar.good {
+.strength-bar.strong {
 	background-color: #38a169;
 	width: 80%;
 }
-.strength-bar.excellent {
+.strength-bar.very-strong {
 	background-color: #3182ce;
 	width: 100%;
 }
@@ -92,16 +72,16 @@
 	display: inline-block;
 	width: 16px;
 	height: 16px;
-	background-color: #fff;
-	border: 1px solid #cbd5e0;
+	background-color: #4b5563;
+	border: 1px solid #6b7280;
 	border-radius: 3px;
 	margin-right: 8px;
 	vertical-align: middle;
 	cursor: pointer;
 }
 .custom-checkbox input[type='checkbox']:checked + .checkmark {
-	background-color: #3182ce;
-	border-color: #3182ce;
+	background-color: #3b82f6;
+	border-color: #3b82f6;
 }
 .custom-checkbox input[type='checkbox']:checked + .checkmark:after {
 	content: '';
@@ -124,14 +104,52 @@ input[type='number'] {
 	-moz-appearance: textfield;
 }
 body {
-	background-color: #ffffff;
 	font-family: sans-serif;
+	position: relative;
+	overflow-x: hidden;
 }
 
-.active-lang {
-	font-weight: bold;
-	text-decoration: underline;
+#passwordInput {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	position: relative;
+	z-index: 1;
 }
-.lang-switch-btn {
-	cursor: pointer;
+#passwordInfoArea {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+#bubble-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	overflow: hidden;
+}
+
+.bubble {
+	position: absolute;
+	bottom: -100px;
+	background-color: rgba(255, 255, 255, 0.05);
+	border-radius: 50%;
+	opacity: 0;
+	animation: bubble-rise 8s infinite ease-in;
+}
+
+@keyframes bubble-rise {
+	0% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+	10%,
+	90% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-100vh);
+		opacity: 0;
+	}
 }

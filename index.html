@@ -1,67 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title data-translate="title">
-			PasswordMonster - How Secure is Your Password?
-		</title>
+		<title>PasswordMonster - How Secure is Your Password?</title>
 		<script src="https://cdn.tailwindcss.com"></script>
 		<link rel="stylesheet" href="./static/css/app.css" />
 	</head>
-	<body class="text-gray-800">
-		<header class="bg-header-blue py-4">
-			<div class="container mx-auto px-4 flex justify-between items-center">
-				<div>
-					<span
-						class="text-white font-bold text-lg"
-						data-translate="header_brand"
-						>PasswordMonster</span
-					>
-					<span class="text-white text-sm ml-4" data-translate="header_contact"
-						>info@passwordmonster.com</span
-					>
-				</div>
-				<div class="text-white text-sm">
-					<span class="lang-switch-btn" data-lang="en">EN</span> |
-					<span class="lang-switch-btn" data-lang="ru">RU</span>
-				</div>
-			</div>
-		</header>
-
-		<div class="bg-header-blue py-10 text-center">
-			<h1
-				class="text-4xl font-bold text-white mb-[12px]"
-				data-translate="main_title"
-			>
-				How Secure is Your Password?
-			</h1>
-		</div>
+	<body
+		class="bg-gray-900 text-gray-300 flex flex-col items-center min-h-screen"
+	>
+		<div id="bubble-container"></div>
 
 		<main
-			class="container mx-auto px-4 mt-[-40px] flex justify-center items-start relative z-10"
+			class="container mx-auto px-4 flex flex-grow justify-center items-center w-full"
 		>
-			<aside class="hidden lg:block w-1/5 mr-8">
-				<div
-					class="bg-gray-200 h-96 flex items-center justify-center text-gray-500"
-				>
-					<span data-translate="ad_placeholder">Реклама</span>
-				</div>
-			</aside>
-
 			<section
-				class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-2xl"
+				class="bg-gray-800 p-6 md:p-8 rounded-lg shadow-xl w-full max-w-2xl"
 			>
-				<h2
-					class="text-xl font-semibold mb-2 text-dark-gray"
-					data-translate="test_title"
-				>
+				<h2 class="text-2xl font-semibold mb-4 text-gray-100">
 					Take the Password Test
 				</h2>
-				<p class="text-sm text-medium-gray mb-4" data-translate="test_tip_text">
-					<strong class="text-dark-gray" data-translate="test_tip_strong"
-						>Tip:</strong
-					>
+				<p class="text-sm text-gray-400 mb-6">
+					<strong class="text-gray-200">Tip:</strong>
 					Avoid the use of dictionary words or common names, and avoid using any
 					personal information
 				</p>
@@ -70,8 +31,7 @@
 					<input
 						type="password"
 						id="passwordInput"
-						class="w-full px-4 py-3 border border-gray-300 rounded-t-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400"
-						data-translate="password_placeholder"
+						class="w-full px-4 py-3 border border-gray-600 rounded-t-md text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 bg-gray-700 text-gray-100"
 						placeholder="Type a password"
 						autocomplete="new-password"
 					/>
@@ -82,12 +42,9 @@
 
 				<div
 					id="passwordInfoArea"
-					class="bg-input-area p-4 rounded-b-md text-center mb-4"
+					class="bg-gray-700 p-4 rounded-b-md text-center mb-4"
 				>
-					<span
-						id="strengthText"
-						class="text-lg font-semibold text-dark-gray"
-						data-translate="strength_no_password"
+					<span id="strengthText" class="text-lg font-semibold text-gray-100"
 						>No Password</span
 					>
 				</div>
@@ -95,80 +52,42 @@
 				<div class="text-right mb-4">
 					<label
 						for="showPasswordCheckbox"
-						class="text-sm text-medium-gray inline-flex items-center cursor-pointer custom-checkbox"
+						class="text-sm text-gray-400 inline-flex items-center cursor-pointer custom-checkbox"
 					>
 						<input type="checkbox" id="showPasswordCheckbox" />
 						<span class="checkmark"></span>
-						<span data-translate="show_password_label">Show password</span>
+						<span>Show password</span>
 					</label>
 				</div>
 
 				<div class="mb-6">
 					<span
-						class="text-sm font-semibold mr-2"
+						class="text-sm font-semibold mr-2 text-gray-200"
 						id="charCountPrefix"
-						data-translate="char_count_prefix"
 						>characters containing:</span
 					>
-					<span
-						id="lowerCaseIndicator"
-						class="char-indicator"
-						data-translate="indicator_lower"
-						>Lower case</span
-					>
-					<span
-						id="upperCaseIndicator"
-						class="char-indicator"
-						data-translate="indicator_upper"
-						>Upper case</span
-					>
-					<span
-						id="numbersIndicator"
-						class="char-indicator"
-						data-translate="indicator_numbers"
-						>Numbers</span
-					>
-					<span
-						id="symbolsIndicator"
-						class="char-indicator"
-						data-translate="indicator_symbols"
-						>Symbols</span
-					>
+					<span id="lowerCaseIndicator" class="char-indicator">Lower case</span>
+					<span id="upperCaseIndicator" class="char-indicator">Upper case</span>
+					<span id="numbersIndicator" class="char-indicator">Numbers</span>
+					<span id="symbolsIndicator" class="char-indicator">Symbols</span>
 				</div>
 
 				<div class="text-center mb-6">
-					<p
-						class="text-sm text-medium-gray mb-1"
-						data-translate="crack_time_label"
-					>
-						Time to crack your password:
-					</p>
-					<p id="crackTimeText" class="text-3xl font-bold text-dark-gray">~</p>
+					<p class="text-sm text-gray-400 mb-1">Time to crack your password:</p>
+					<p id="crackTimeText" class="text-3xl font-bold text-gray-100">~</p>
 				</div>
 
-				<p
-					class="text-xs text-center text-medium-gray"
-					data-translate="disclaimer"
-				>
+				<p class="text-xs text-center text-gray-500">
 					Your passwords are never stored. Even if they were, we have no idea
 					who you are!
 				</p>
 
-				<div id="feedbackArea" class="mt-4 text-sm text-red-600 px-2">
+				<div id="feedbackArea" class="mt-4 text-sm text-red-400 px-2">
 					<ul id="feedbackList" class="list-disc list-inside space-y-1"></ul>
 				</div>
 			</section>
-
-			<aside class="hidden lg:block w-1/5 ml-8">
-				<div
-					class="bg-gray-200 h-96 flex items-center justify-center text-gray-500"
-				>
-					<span data-translate="ad_placeholder">Реклама</span>
-				</div>
-			</aside>
 		</main>
 
-		<script src="./js/localization.js"></script>
 		<script src="./js/script.js"></script>
 	</body>
 </html>
