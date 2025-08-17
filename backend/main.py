@@ -1,21 +1,21 @@
-from fastapi import FastAPI, Body # type: ignore
+from fastapi import FastAPI, Body 
+from fastapi.middleware.cors import CORSMiddleware 
 import subprocess
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
+# Настройка CORS (разрешить запросы с фронтенда)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Для разработки. В продакшене укажите конкретный домен.
+    allow_methods=["POST", "OPTIONS"],  # Явно разрешаем OPTIONS и POST
+    allow_headers=["*"],
+)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
-
-
-@app.post("/check_password")
+@app.post("/")
 def check_password(password: str = Body(..., embed=True)):
     result = subprocess.run(
-        ["./main.exe"],
+        ["./checkPasswordStrengthCPP"],
         input=password,  # Убрали .encode() - передаём строку напрямую
         capture_output=True,
         text=True,  # Обрабатываем ввод/вывод как текст (str)
