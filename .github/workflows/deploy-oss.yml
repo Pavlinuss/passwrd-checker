@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Deploy Frontend to Alibaba OSS
 
 on:
@@ -11,32 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Клонируем репозиторий
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Устанавливаем unzip
-      - name: Install unzip
-        run: sudo apt-get install unzip
+      - name: Setup OSSUTIL
+        uses: yizhoumo/setup-ossutil@v2
+        with:
+          ossutil-version: '1.7.18'
+          endpoint: ${{ secrets.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
 
-      # 3. Скачиваем и распаковываем ossutil
-      - name: Download and unzip ossutil
-        run: |
-          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.1.2/ossutil-2.1.2-linux-amd64.zip
-          unzip ossutil.zip
-          chmod +x ossutil-2.1.2-linux-amd64/ossutil
-          sudo mv ossutil-2.1.2-linux-amd64/ossutil /usr/local/bin/ossutil
-          ossutil version
-
-      # 4. Конфигурируем ossutil
-      - name: Configure ossutil
-        run: |
-          ossutil config --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
-                         --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
-                         --endpoint ${{ secrets.ALIYUN_OSS_REGION }} \
-                         --output json
-
-      # 5. Деплой директории frontend/ в бакет
       - name: Sync frontend to OSS
         run: |
-          ossutil cp -r frontend/ oss://$${{ secrets.ALIYUN_OSS_BUCKET }}/ --update
+          ossutil cp -r frontend/ oss://$${{ secrets.OSS_BUCKET_NAME }}/ --update
