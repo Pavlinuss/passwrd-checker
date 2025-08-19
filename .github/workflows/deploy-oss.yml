@@ -15,23 +15,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Устанавливаем ossutil
-      - name: Install ossutil
-        run: |
-          curl -o ossutil64 https://gosspublic.alicdn.com/ossutil/1.7.20/ossutil64
-          chmod +x ossutil64
-          sudo mv ossutil64 /usr/local/bin/ossutil
+      # 2. Устанавливаем unzip
+      - name: Install unzip
+        run: sudo apt-get install unzip
 
-      # 3. Конфигурируем ossutil
+      # 3. Скачиваем и распаковываем ossutil
+      - name: Download and unzip ossutil
+        run: |
+          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.1.2/ossutil-2.1.2-linux-amd64.zip
+          unzip ossutil.zip
+          chmod +x ossutil
+          sudo mv ossutil /usr/local/bin/ossutil
+          ossutil version
+
+      # 4. Конфигурируем ossutil
       - name: Configure ossutil
         run: |
-          ossutil config \
-            --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
-            --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
-            --endpoint ${{ secrets.ALIYUN_OSS_REGION }} \
-            --output json
+          ossutil config --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
+                         --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
+                         --endpoint ${{ secrets.ALIYUN_OSS_REGION }} \
+                         --output json
 
-      # 4. Деплой директории frontend/ в бакет
+      # 5. Деплой директории frontend/ в бакет
       - name: Sync frontend to OSS
         run: |
-          ossutil
+          ossutil cp -r frontend/ oss://$${{ secrets.ALIYUN_OSS_BUCKET }}/ --update
