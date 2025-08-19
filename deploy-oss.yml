@@ -18,19 +18,20 @@ jobs:
       # 2. Устанавливаем ossutil
       - name: Install ossutil
         run: |
-          curl -o ossutil64 https://gosspublic.alicdn.com/ossutil/1.7.6/ossutil64
+          curl -o ossutil64 https://gosspublic.alicdn.com/ossutil/1.7.20/ossutil64
           chmod +x ossutil64
           sudo mv ossutil64 /usr/local/bin/ossutil
 
       # 3. Конфигурируем ossutil
       - name: Configure ossutil
         run: |
-          ossutil config --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
-                         --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
-                         --endpoint ${{ secrets.ALIYUN_OSS_REGION }} \
-                         --output json
+          ossutil config \
+            --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
+            --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
+            --endpoint ${{ secrets.ALIYUN_OSS_REGION }} \
+            --output json
 
       # 4. Деплой директории frontend/ в бакет
       - name: Sync frontend to OSS
         run: |
-          ossutil cp -r frontend/ oss://$${{ secrets.ALIYUN_OSS_BUCKET }}/ --update
+          ossutil
