@@ -28,10 +28,11 @@ jobs:
           BUCKET: ${{ secrets.ALIYUN_OSS_BUCKET }}
           ACCESS_KEY: ${{ secrets.ALIYUN_OSS_KEY_ID }}
           SECRET_KEY: ${{ secrets.ALIYUN_OSS_KEY_SECRET }}
-          ENDPOINT: ${{ secrets.ALIYUN_OSS_REGION }}
+          REGION: ${{ secrets.ALIYUN_OSS_REGION }}
         run: |
           ossutil cp -r frontend/ oss://$BUCKET/ \
             --update \
             --access-key-id $ACCESS_KEY \
             --access-key-secret $SECRET_KEY \
-            --endpoint $ENDPOINT
+            --region $REGION
+
