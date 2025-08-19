@@ -22,10 +22,10 @@ jobs:
       # 3. Скачиваем и распаковываем ossutil
       - name: Download and unzip ossutil
         run: |
-          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.1.2/ossutil-2.1.2-linux-amd64.zip
+          ccurl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.1.2/ossutil-2.1.2-linux-amd64.zip
           unzip ossutil.zip
-          chmod +x ossutil
-          sudo mv ossutil /usr/local/bin/ossutil
+          chmod +x ossutil-2.1.2-linux-amd64/ossutil
+          sudo mv ossutil-2.1.2-linux-amd64/ossutil /usr/local/bin/ossutil
           ossutil version
 
       # 4. Конфигурируем ossutil
