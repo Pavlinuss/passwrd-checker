@@ -10,21 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Клонируем репозиторий
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup OSSUTIL
-        uses: yizhoumo/setup-ossutil@v2
-        with:
-          ossutil-version: '1.7.18'
-          endpoint: ${{ secrets.OSS_ENDPOINT }}
-          access-key-id: ${{ secrets.OSS_ACCESS_KEY_ID }}
-          access-key-secret: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
-
-      - name: Sync frontend to OSS
+      # 2. Устанавливаем ossutil
+      - name: Install ossutil
         run: |
-          ossutil cp -r frontend/ oss://{{ secrets.ALIYUN_OSS_BUCKET }}/ \
-                  --update \
-                  --access-key-id ${{ secrets.ALIYUN_OSS_KEY_ID }} \
-                  --access-key-secret ${{ secrets.ALIYUN_OSS_KEY_SECRET }} \
-                  --endpoint ${{ secrets.ALIYUN_OSS_REGION }}
+          curl -L -o ossutil.zip https://gosspublic.alicdn.com/ossutil/v2/2.1.2/ossutil-2.1.2-linux-amd64.zip
+          unzip ossutil.zip
+          chmod +x ossutil-2.1.2-linux-amd64/ossutil
+          sudo mv ossutil-2.1.2-linux-amd64/ossutil /usr/local/bin/ossutil
+
+      # 3. Загружаем frontend в OSS
+      - name: Sync frontend to OSS
+        env:
+          BUCKET: ${{ secrets.ALIYUN_OSS_BUCKET }}
+          ACCESS_KEY: ${{ secrets.ALIYUN_OSS_KEY_ID }}
+          SECRET_KEY: ${{ secrets.ALIYUN_OSS_KEY_SECRET }}
+          ENDPOINT: ${{ secrets.ALIYUN_OSS_REGION }}
+        run: |
+          ossutil cp -r frontend/ oss://$BUCKET/ \
+            --update \
+            --access-key-id $ACCESS_KEY \
+            --access-key-secret $SECRET_KEY \
+            --endpoint $ENDPOINT
