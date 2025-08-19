@@ -23,4 +23,8 @@ jobs:
 
       - name: Sync frontend to OSS
         run: |
-          ossutil cp -r frontend/ oss://$${{ secrets.OSS_BUCKET_NAME }}/ --update
+          ossutil cp -r frontend/ oss://$${{ secrets.OSS_BUCKET_NAME }}/ \
+                  --update \
+                  --access-key-id ${{ secrets.OSS_ACCESS_KEY_ID }} \
+                  --access-key-secret ${{ secrets.OSS_ACCESS_KEY_SECRET }} \
+                  --endpoint ${{ secrets.OSS_ENDPOINT }}
