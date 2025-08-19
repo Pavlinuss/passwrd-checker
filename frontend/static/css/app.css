@@ -139,6 +139,57 @@ body {
 	animation: bubble-rise 8s infinite ease-in;
 }
 
+/* Индикаторы символов */
+.char-indicator {
+    opacity: 0.3;
+    transition: opacity 0.3s;
+    margin-right: 0.5rem;
+}
+
+.char-indicator.active {
+    opacity: 1;
+}
+
+.char-indicator::before {
+    content: "✓ ";
+}
+
+/* Шкала сложности пароля */
+.strength-bar {
+    height: 4px;
+    width: 0%;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.strength-bar.no-password {
+    width: 0%;
+}
+
+.strength-bar.very-weak {
+    width: 20%;
+    background-color: #ef4444;
+}
+
+.strength-bar.weak {
+    width: 40%;
+    background-color: #f59e0b;
+}
+
+.strength-bar.medium {
+    width: 60%;
+    background-color: #fbbf24;
+}
+
+.strength-bar.strong {
+    width: 80%;
+    background-color: #10b981;
+}
+
+.strength-bar.very-strong {
+    width: 100%;
+    background-color: #3b82f6;
+}
+
 @keyframes bubble-rise {
 	0% {
 		transform: translateY(0);
