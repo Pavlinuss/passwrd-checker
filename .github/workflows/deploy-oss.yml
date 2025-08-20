@@ -23,18 +23,19 @@ jobs:
           sudo mv ossutil-2.1.2-linux-amd64/ossutil /usr/local/bin/ossutil
 
       # 3. Загружаем frontend в OSS
-      - name: Sync frontend to OSS
-        env:
-          BUCKET: ${{ secrets.ALIYUN_OSS_BUCKET }}
-          ACCESS_KEY: ${{ secrets.ALIYUN_OSS_KEY_ID }}
-          SECRET_KEY: ${{ secrets.ALIYUN_OSS_KEY_SECRET }}
-          REGION: ${{ secrets.ALIYUN_OSS_REGION }}
+      - name: Upload frontend to OSS
         run: |
           ossutil cp -r frontend oss://$BUCKET/ \
             --update \
             --access-key-id $ACCESS_KEY \
             --access-key-secret $SECRET_KEY \
-            --region $REGION
+            --endpoint $ENDPOINT
+        env:
+          BUCKET: ${{ secrets.ALIYUN_OSS_BUCKET }}
+          ACCESS_KEY: ${{ secrets.ALIYUN_OSS_KEY_ID }}
+          SECRET_KEY: ${{ secrets.ALIYUN_OSS_KEY_SECRET }}
+          ENDPOINT: ${{ secrets.ALIYUN_OSS_REGION }}
+
 
       # 4. Отладка
       - name: Show OSS upload report
