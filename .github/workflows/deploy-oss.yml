@@ -29,7 +29,9 @@ jobs:
             --update \
             --access-key-id $ACCESS_KEY \
             --access-key-secret $SECRET_KEY \
-            --endpoint $ENDPOINT
+            --region ap-southeast-1 \
+            --endpoint oss-ap-southeast-1.aliyuncs.com
+
         env:
           BUCKET: ${{ secrets.ALIYUN_OSS_BUCKET }}
           ACCESS_KEY: ${{ secrets.ALIYUN_OSS_KEY_ID }}
