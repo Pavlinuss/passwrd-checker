@@ -38,5 +38,9 @@ jobs:
 
       # 4. Отладка
       - name: Show OSS upload report
-        run: cat ossutil_output/ossutil_report_*.report || true
+        if: always()
+        run: |
+          echo "=== OSS Report ==="
+          cat ossutil_output/ossutil_report_*.report || echo "No report file found"
+
 
