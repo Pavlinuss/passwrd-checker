@@ -30,9 +30,13 @@ jobs:
           SECRET_KEY: ${{ secrets.ALIYUN_OSS_KEY_SECRET }}
           REGION: ${{ secrets.ALIYUN_OSS_REGION }}
         run: |
-          ossutil cp -r frontend/ oss://$BUCKET/ \
+          ossutil cp -r frontend oss://$BUCKET/ \
             --update \
             --access-key-id $ACCESS_KEY \
             --access-key-secret $SECRET_KEY \
             --region $REGION
+
+      # 4. Отладка
+      - name: Show OSS upload report
+        run: cat ossutil_output/ossutil_report_*.report || true
 
