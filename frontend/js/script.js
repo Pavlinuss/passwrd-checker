@@ -82,7 +82,7 @@ async function updatePasswordStrength(password) {
 	
 	try {
 		// Запрос к бэкенду
-		const response = await fetch('https://api.checkmypassword.xyz:2053/', {
+		const response = await fetch('https://api.checkmypassword.xyz/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ password })
