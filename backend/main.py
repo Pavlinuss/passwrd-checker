@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Body 
 from fastapi.middleware.cors import CORSMiddleware 
-import subprocess
+from checkPassswrd import is_password_pwned
 
 app = FastAPI()
 
@@ -15,11 +15,12 @@ app.add_middleware(
 
 @app.post("/")
 def check_password(password: str = Body(..., embed=True)):
-    result = subprocess.run(
-        ["./checkPasswordStrengthCPP"],
-        input=password,  # Убрали .encode() - передаём строку напрямую
-        capture_output=True,
-        text=True,  # Обрабатываем ввод/вывод как текст (str)
-        encoding='utf-8'  # Явно указываем кодировку (опционально)
-    )
-    return {"strength": result.stdout.strip()}
+    result = is_password_pwned(password)
+
+    if result.get("error"):
+        return {"error": result["error"]}
+
+    return {
+        "pwned": result["pwned"],
+        "count": result["count"],
+    }
